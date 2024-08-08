@@ -1,0 +1,36 @@
+--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+____exports = {}
+---
+-- @noSelfInFile
+function on_xml_read()
+    RegisterScriptCallback(
+        "on_xml_read",
+        function(xml_file_name, xml_obj)
+            printf("# xml_file: %s", xml_file_name)
+            if (string.match(xml_file_name, "gameplay")) then
+                local ____opt_0 = db.actor
+                if ____opt_0 ~= nil then
+                    ____opt_0:give_game_news(
+                        "",
+                        xml_file_name,
+                        db.actor:character_icon(),
+                        0,
+                        5000
+                    )
+                end
+            end
+            local dialogs_to_change = "gameplay\\dialogs_deadcity.xml"
+            if xml_file_name == dialogs_to_change then
+                xml_obj:insertFromXMLFile("super_stalker\\aslan_dialogs.xml")
+            end
+            if xml_file_name == "gameplay\\character_desc_deadcity.xml" then
+                local aslan_id = "cit_killers_merc_barman_mlr"
+                local el = xml_obj:query(("specific_character[id=\"" .. aslan_id) .. "\"]")[1]
+                if el then
+                    xml_obj:insertFromXMLString("<actor_dialog>aslan_find_barrett</actor_dialog>", el, #el.kids)
+                end
+            end
+        end
+    )
+end
+

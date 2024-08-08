@@ -1,0 +1,50 @@
+--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+____exports = {}
+---
+-- @noSelfInFile
+function on_game_start()
+    RegisterScriptCallback(
+        "on_key_press",
+        function(____, key)
+            if db.actor and key == DIK_keys.DIK_I then
+                actor_menu.set_msg(
+                    1,
+                    "aslan_discover_actor_likes_barrett: " .. tostring(db.actor:has_info("aslan_discover_actor_likes_barrett"))
+                )
+            end
+        end
+    )
+end
+dialogs.check_barrett_m82_in_hands = function(speaker_1, speaker_2)
+    if not db.actor then
+        return false
+    end
+    local ____temp_2
+    local ____opt_0 = db.actor:active_item()
+    if (____opt_0 and ____opt_0:section()) == "wpn_m82" then
+        ____temp_2 = true
+    else
+        ____temp_2 = false
+    end
+    return ____temp_2
+end
+dialogs.give_task_find_barrett = function(actor, aslan)
+    task_manager.get_task_manager():give_task(
+        "cit_killers_merc_barman_mlr_task_find_barrett",
+        aslan:id()
+    )
+end
+function give_money(speaker_1, speaker_2)
+    dialogs.relocate_money_to_actor(nil, nil, 222)
+    dialogs.relocate_money_to_actor(nil, nil, 1000)
+end
+function give_gift(speaker_1, speaker_2)
+    alife():create(
+        "wpn_m82",
+        speaker_2:position(),
+        speaker_2:level_vertex_id(),
+        speaker_2:game_vertex_id(),
+        speaker_2:id()
+    )
+end
+

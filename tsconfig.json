@@ -1,0 +1,35 @@
+{
+  "$schema": "https://raw.githubusercontent.com/TypeScriptToLua/TypeScriptToLua/master/tsconfig-schema.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext"],
+    "moduleResolution": "Bundler",
+    "skipLibCheck": false,
+    "strictNullChecks": true,
+    "strict": true,
+    "moduleDetection": "force",
+    "outDir": "dist",
+    "paths": {
+      "@/*": ["./src/*"],
+      "#/*": ["./*"]
+    },
+    "types": [
+      "lua-types/5.4",
+      "anomaly-packer/dist/types/addons/dxml",
+      "anomaly-packer/dist/types/game/__base",
+      "anomaly-packer/dist/types/game/actor_menu",
+      "anomaly-packer/dist/types/game/_g",
+      "anomaly-packer/dist/types/game/db",
+      "anomaly-packer/dist/types/game/debug_cmd_list",
+      "anomaly-packer/dist/types/game/dialogs",
+      "anomaly-packer/dist/types/game/game",
+      "anomaly-packer/dist/types/game/level",
+      "anomaly-packer/dist/types/game/task_manager",
+      "anomaly-packer/dist/types/game/xr_conditions",
+      "anomaly-packer/dist/types/game/xr_effects",
+      "anomaly-packer/dist/types/game/news_manager"
+    ]
+  }
+}

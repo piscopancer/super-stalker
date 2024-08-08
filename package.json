@@ -1,0 +1,16 @@
+{
+  "name": "super-stalker",
+  "module": "index.ts",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "anomaly-packer": "file:../anomaly-packer/anomaly-packer-0.0.33.tgz"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "build": "bun .",
+    "types": "bun anomaly-packer types list"
+  },
+  "type": "module"
+}

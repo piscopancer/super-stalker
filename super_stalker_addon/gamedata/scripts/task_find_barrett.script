@@ -1,0 +1,103 @@
+--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+____exports = {}
+---
+-- @noSelfInFile
+state = {barret_id = nil}
+aslan_sid = "cit_killers_merc_barman_mlr"
+function on_game_start()
+    RegisterScriptCallback(
+        "load_state",
+        function(m_data)
+            if m_data.find_barrett_task then
+                state = m_data.find_barrett_task
+            end
+        end
+    )
+    RegisterScriptCallback(
+        "save_state",
+        function(m_data)
+            m_data.find_barrett_task = state
+        end
+    )
+end
+task_status_functor.aslan_task_status_functor = function(_task, task_id)
+    if not db.actor then
+        return
+    end
+    if _task.stage == 0 then
+        if state.barret_id == nil then
+            local barrett_spawn_pos = vector():set(-44.5845, 2.2057, -18.6)
+            local se_barrett = alife():create(
+                "aslan_barrett_m82",
+                barrett_spawn_pos,
+                db.actor:level_vertex_id(),
+                db.actor:game_vertex_id()
+            )
+            state.barret_id = se_barrett.id
+        else
+            local barrett_in_inv = db.actor:object("aslan_barrett_m82")
+            if barrett_in_inv then
+                _task.stage = 1
+            end
+        end
+        return
+    end
+    if _task.stage == 1 then
+        local barrett_in_inv = db.actor:object("aslan_barrett_m82")
+        if not barrett_in_inv then
+            _task.stage = 0
+        end
+    end
+end
+task_functor.aslan_task_target_functor = function(task_id, field, p, _task)
+    if field == "title" then
+        repeat
+            local ____switch16 = _task.stage
+            local ____cond16 = ____switch16 == 0
+            if ____cond16 then
+                return "cit_killers_merc_barman_mlr_task_find_barrett_0_title"
+            end
+            ____cond16 = ____cond16 or ____switch16 == 1
+            if ____cond16 then
+                return "cit_killers_merc_barman_mlr_task_find_barrett_1_title"
+            end
+        until true
+    end
+    if field == "descr" then
+        repeat
+            local ____switch18 = _task.stage
+            local ____cond18 = ____switch18 == 0
+            if ____cond18 then
+                return "cit_killers_merc_barman_mlr_task_find_barrett_0_descr"
+            end
+            ____cond18 = ____cond18 or ____switch18 == 1
+            if ____cond18 then
+                return "cit_killers_merc_barman_mlr_task_find_barrett_1_descr"
+            end
+        until true
+    end
+    if field == "target" then
+        if _task.stage == 0 then
+            return state.barret_id
+        end
+        if _task.stage == 1 then
+            return _task.task_giver_id
+        end
+    end
+end
+cmd_ = debug_cmd_list.command_get_list()
+cmd_.aslan_task = function()
+    local aslan_id = get_story_object_id(aslan_sid)
+    if aslan_id ~= nil then
+        task_manager.get_task_manager():give_task("cit_killers_merc_barman_mlr_task_find_barrett", aslan_id)
+    else
+        printe("aslan not found")
+    end
+end
+xr_effects.return_barrett = function()
+    local aslan = get_story_object(aslan_sid)
+    if aslan then
+        dialogs.relocate_item_section(aslan, "aslan_barrett_m82", "out")
+    end
+end
+
